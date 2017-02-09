@@ -1,6 +1,6 @@
-# Isekai.me - Revolution -
+# species-in-pieces
 
-This is the source code of [isekai.me](http://isekai.me).
+这个项目用于一种很有趣的展示方式，这里面的数据和内容我来源于[这个网站](http://species-in-pieces.com/)，我喜欢这类极富创意的展示方式。
 
 ## Develop
 
@@ -50,6 +50,6 @@ z: bug fixed, small feature/improvment.
 
 ## LICENSE
 
-Copyright 2015-2016 CLEVERIOUS(@sekaiamber)
+Copyright 2016 XU XIAOMENG(@sekaiamber)
 
 Released under the MIT and GPL (version 2 or later) Licenses.
