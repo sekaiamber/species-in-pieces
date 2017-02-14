@@ -22,8 +22,22 @@ for (var i = 0; i < files.length; i++) {
       background: svg.rect[0].$.fill,
       polygons: [],
     };
+    var transform = svg.g[0].$.transform;
+    var scale = parseFloat(/scale\((.+?)\)/ig.exec(transform)[1]);
+    var translate = /translate\((.+?)\)/ig.exec(transform)[1].split(/[ ,]/).map(function(t) { return parseFloat(t) });
     outJson.polygons = svg.g[0].polygon.map(function(polygon) {
-      return polygon.$;
+      var attrs = polygon.$;
+      attrs.points = attrs.points.split(' ');
+      attrs.points = attrs.points.map(function(point) {
+        point = point.split(',').map(function(p) { return parseFloat(p) });
+        point[0] -= translate[0];
+        point[1] -= translate[1];
+        point[0] *= scale;
+        point[1] *= scale;
+        return point;
+      });
+      attrs['fill-opacity'] = parseFloat(attrs['fill-opacity']);
+      return attrs;
     });
     fs.writeFileSync(__dirname + '/out_images/' + files[i] + '.json', JSON.stringify(outJson));
     console.log(files[i] + ' done.');
