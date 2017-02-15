@@ -4,3 +4,4 @@ npm-debug.log
 root/build/*
 .DS_Store
 utils/out_images/
+root/index/species/data/

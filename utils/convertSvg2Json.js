@@ -43,10 +43,3 @@ for (var i = 0; i < files.length; i++) {
     console.log(files[i] + ' done.');
   });
 }
-
-// fs.readFile(__dirname + '/foo.xml', function (err, data) {
-//   parser.parseString(data, function (err, result) {
-//     console.dir(result);
-//     console.log('Done');
-//   });
-// });
