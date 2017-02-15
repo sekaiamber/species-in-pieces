@@ -17,9 +17,9 @@ Start develop environment with following step.
 $ npm install
 ```
 
-2. Start webpack to build
+2. Build data (MacOS/Linux, If you use Windows, please see command in `utils/work.sh`)
 ```shell
-$ npm run build
+$ ./utils/work.sh
 ```
 
 3. Start webpack in develop environment
