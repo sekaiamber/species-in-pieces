@@ -1,3 +1,7 @@
+/**
+ * 这个脚本会将Primitive产生的SVG图片优化，去属性，并输出JSON数据
+ */
+
 var fs = require('fs');
 var path = require('path');
 var xml2js = require('xml2js');
