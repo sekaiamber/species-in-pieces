@@ -52,7 +52,7 @@ export default class Species extends React.Component {
   polygons = []
   render() {
     return (
-      <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1024 1024" preserveAspectRatio="xMidYMid meet" ref={c => this.svg = c} className="species-svg">
+      <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="-100 -100 1000 1000" preserveAspectRatio="xMidYMid meet" ref={c => this.svg = c} className="species-svg">
         {(() => {
           const ret = [];
           for (let i = 0; i < 300; i += 1) {
