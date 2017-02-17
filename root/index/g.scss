@@ -5,7 +5,15 @@ body {
 
 html,
 body,
-#main {
+#main,
+#container {
   height: 100%;
   width: 100%;
+  overflow: hidden;
+}
+
+.control-pad {
+  position: absolute;
+  top: 0;
+  left: 0;
 }

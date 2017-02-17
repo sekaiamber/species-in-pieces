@@ -29,6 +29,13 @@ $ npm run dev
 
 4. Visit in browser at `http://localhost:8080/`.
 
+## Make Images
+
+I use [Primitive](https://github.com/fogleman/primitive) to get those images.
+```shell
+$ primitive -i ./input.jpg -o ./output.svg -n 300 -a 255 -s 500 -r 500
+```
+
 ## Depoly
 
 Deploy static files with following step.
