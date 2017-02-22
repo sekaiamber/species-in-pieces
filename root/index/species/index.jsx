@@ -11,26 +11,38 @@ function changePolygons({ target, options }) {
     four: currentInfo.points[3],
     five: currentInfo.points[4],
     six: currentInfo.points[5],
+    fill: currentInfo.fill,
   };
 
-  TweenLite.to(obj, 1, {
+  const time = Math.random() + 1;
+  TweenLite.to(obj, time, {
     one: nextInfo.points[0],
     two: nextInfo.points[1],
     three: nextInfo.points[2],
     four: nextInfo.points[3],
     five: nextInfo.points[4],
     six: nextInfo.points[5],
+    fill: nextInfo.fill,
     onUpdate() {
       target.setAttribute('points', `${obj.one},${obj.two} ${obj.three},${obj.four} ${obj.five},${obj.six}`);
+      const style = target.style;
+      style.fill = obj.fill;
     },
   });
 
-  TweenLite.fromTo(target, 1, {
-    fill: currentInfo.fill,
-  }, {
-    fill: nextInfo.fill,
-  });
+  // TweenLite.fromTo(target, time, {
+  //   css: {
+  //     fill: currentInfo.fill,
+  //   },
+  // }, {
+  //   css: {
+  //     fill: nextInfo.fill,
+  //   },
+  // });
 }
+
+let wWidth = window.innerWidth / 2;
+let wHeight = window.innerHeight / 2;
 
 export default class Species extends React.Component {
   componentDidMount() {
@@ -46,6 +58,10 @@ export default class Species extends React.Component {
         },
       });
     }
+    window.onresize = () => {
+      wWidth = window.innerWidth / 2;
+      wHeight = window.innerHeight / 2;
+    };
   }
   componentWillReceiveProps(nextProps) {
     const currentInfo = this.props.info;
@@ -63,10 +79,19 @@ export default class Species extends React.Component {
   shouldComponentUpdate() {
     return false;
   }
+  handleMouseMove(e) {
+    const x = (wWidth - e.pageX) / 3000;
+    const y = (wHeight - e.pageY) / 3000;
+    const length = this.polygons.length;
+    for (let i = 0; i < length; i += 1) {
+      const polygon = this.polygons[i];
+      polygon.style.transform = `translate(${x * (length - i)}px, ${y * (length - i)}px)`;
+    }
+  }
   polygons = []
   render() {
     return (
-      <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="-100 -100 1000 1000" preserveAspectRatio="xMidYMid meet" ref={c => this.svg = c} className="species-svg">
+      <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="-100 -100 1000 1000" preserveAspectRatio="xMidYMid meet" ref={c => this.svg = c} className="species-svg" onMouseMove={this.handleMouseMove.bind(this)}>
         {(() => {
           const ret = [];
           for (let i = 0; i < 300; i += 1) {
