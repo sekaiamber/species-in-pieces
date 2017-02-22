@@ -33,6 +33,20 @@ function changePolygons({ target, options }) {
 }
 
 export default class Species extends React.Component {
+  componentDidMount() {
+    const nextInfo = this.props.info;
+    for (let i = 0; i < nextInfo.polygons.length; i += 1) {
+      const x = parseInt(Math.random() * 800, 10);
+      const y = parseInt(Math.random() * 800, 10);
+      changePolygons({
+        target: this.polygons[i],
+        options: {
+          currentInfo: { fill: '#eeeeee', points: [x, y, x, y, x, y], 'fill-opacity': 1 },
+          nextInfo: nextInfo.polygons[i],
+        },
+      });
+    }
+  }
   componentWillReceiveProps(nextProps) {
     const currentInfo = this.props.info;
     const nextInfo = nextProps.info;
