@@ -29,16 +29,6 @@ function changePolygons({ target, options }) {
       style.fill = obj.fill;
     },
   });
-
-  // TweenLite.fromTo(target, time, {
-  //   css: {
-  //     fill: currentInfo.fill,
-  //   },
-  // }, {
-  //   css: {
-  //     fill: nextInfo.fill,
-  //   },
-  // });
 }
 
 let wWidth = window.innerWidth / 2;

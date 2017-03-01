@@ -1,6 +1,7 @@
 import React from 'react';
 import Species from './species';
 import infos, { names } from './species/infos';
+import Border from './border';
 
 export default class Index extends React.Component {
   constructor(props) {
@@ -24,6 +25,7 @@ export default class Index extends React.Component {
   render() {
     return (
       <div id="container" style={{ backgroundColor: this.state.background }}>
+        <Border />
         <Species info={this.state.currentInfo} />
         <div className="control-pad">
           <button onClick={this.handleIndexChange.bind(this, -1)}>Previous</button>
