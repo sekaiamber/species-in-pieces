@@ -2,7 +2,7 @@ import React from 'react';
 import { TweenLite } from 'gsap';
 import './index.scss';
 
-function changePolygons({ target, options }) {
+function changePolygon({ target, options, onComplete = () => {} }) {
   const { currentInfo, nextInfo } = options;
   const obj = {
     one: currentInfo.points[0],
@@ -28,6 +28,25 @@ function changePolygons({ target, options }) {
       const style = target.style;
       style.fill = obj.fill;
     },
+    onComplete,
+  });
+}
+
+function shinePolygon({ target, color }) {
+  const obj = {
+    color,
+  };
+
+  const time = 0.2;
+  const anime = TweenLite.to(obj, time, {
+    color: '#ffffff',
+    onUpdate() {
+      const style = target.style;
+      style.fill = obj.color;
+    },
+    onComplete() {
+      anime.reverse();
+    },
   });
 }
 
@@ -37,14 +56,19 @@ let wHeight = window.innerHeight / 2;
 export default class Species extends React.Component {
   componentDidMount() {
     const nextInfo = this.props.info;
+    this.transformStart();
+    const self = this;
     for (let i = 0; i < nextInfo.polygons.length; i += 1) {
       const x = parseInt(Math.random() * 800, 10);
       const y = parseInt(Math.random() * 800, 10);
-      changePolygons({
+      changePolygon({
         target: this.polygons[i],
         options: {
           currentInfo: { fill: '#eeeeee', points: [x, y, x, y, x, y], 'fill-opacity': 1 },
           nextInfo: nextInfo.polygons[i],
+        },
+        onComplete() {
+          self.transformEnd();
         },
       });
     }
@@ -52,16 +76,25 @@ export default class Species extends React.Component {
       wWidth = window.innerWidth / 2;
       wHeight = window.innerHeight / 2;
     };
+    if (this.props.shine) {
+      const shineTime = 10000;
+      this.randomShine(shineTime);
+    }
   }
   componentWillReceiveProps(nextProps) {
     const currentInfo = this.props.info;
     const nextInfo = nextProps.info;
+    this.transformStart();
+    const self = this;
     for (let i = 0; i < nextInfo.polygons.length; i += 1) {
-      changePolygons({
+      changePolygon({
         target: this.polygons[i],
         options: {
           currentInfo: currentInfo.polygons[i],
           nextInfo: nextInfo.polygons[i],
+        },
+        onComplete() {
+          self.transformEnd();
         },
       });
     }
@@ -76,6 +109,37 @@ export default class Species extends React.Component {
     for (let i = 0; i < length; i += 1) {
       const polygon = this.polygons[i];
       polygon.style.transform = `translate(${x * (length - i)}px, ${y * (length - i)}px)`;
+    }
+  }
+  transforming = false
+  transformedNum = 0
+  transformStart() {
+    this.transforming = true;
+    this.transformedNum = 0;
+  }
+  transformEnd(onComplete = () => {}) {
+    if (this.transformedNum === this.polygons.length - 1) {
+      onComplete();
+      this.transforming = false;
+    } else {
+      this.transformedNum += 1;
+    }
+  }
+  randomShine(timespan) {
+    for (let i = 0; i < 10; i += 1) {
+      const index = parseInt(Math.random() * 300, 10);
+      setTimeout(this.randomShinePolygon.bind(this, index), Math.random() * timespan);
+    }
+    setTimeout(this.randomShine.bind(this, timespan), timespan);
+  }
+  randomShinePolygon(index) {
+    if (!this.transforming) {
+      const target = this.polygons[index];
+      const color = this.props.info.polygons[index].fill;
+      shinePolygon({
+        target,
+        color,
+      });
     }
   }
   polygons = []
@@ -94,4 +158,6 @@ export default class Species extends React.Component {
   }
 }
 
-/* <polygon key={i} fill={polygon.fill} fillOpacity={polygon['fill-opacity']} points={`${polygon.points[0][0]},${polygon.points[0][1]} ${polygon.points[1][0]},${polygon.points[1][1]} ${polygon.points[2][0]},${polygon.points[2][1]}`} />*/
+Species.defaultProps = {
+  shine: true,
+};
